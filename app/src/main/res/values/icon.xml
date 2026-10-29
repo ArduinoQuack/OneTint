@@ -1,0 +1,6 @@
+<resources>
+    <color name="icon_accent">#FFB49AFF</color>
+    <overlayable name="OneTintIcon">
+        <policy type="public"><item type="color" name="icon_accent"/></policy>
+    </overlayable>
+</resources>
