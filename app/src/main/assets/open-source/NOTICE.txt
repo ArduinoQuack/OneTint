@@ -1,0 +1,5 @@
+Google Material Design Icons: Wi-Fi and volume_up icons.
+Copyright Google LLC. Licensed under the Apache License 2.0.
+Source: https://github.com/google/material-design-icons/blob/master/src/notification/wifi/materialicons/24px.svg
+Vector paths are retained; their tints are selected by the user.
+volume_up source: Google Material Design Icons, av/volume_up.
