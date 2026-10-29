@@ -1,0 +1,10 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="dev.dov.onetint" android:versionCode="12" android:versionName="0.1.11">
+    <uses-sdk android:minSdkVersion="34" android:targetSdkVersion="35"/>
+    <queries><package android:name="com.samsung.android.honeyboard"/><package android:name="com.android.systemui"/></queries>
+    <application android:label="OneTint" android:theme="@style/AppTheme" android:icon="@drawable/icon" android:allowBackup="false" android:supportsRtl="true">
+
+        <activity android:name=".MainActivity" android:exported="true"/>
+        <activity-alias android:name=".LauncherA" android:targetActivity=".MainActivity" android:enabled="true" android:exported="true" android:icon="@drawable/icon" android:label="OneTint"><intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent-filter></activity-alias>
+        <activity-alias android:name=".LauncherB" android:targetActivity=".MainActivity" android:enabled="false" android:exported="true" android:icon="@drawable/icon" android:label="OneTint"><intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent-filter></activity-alias>
+    </application>
+</manifest>
