@@ -32,12 +32,12 @@ Source: `Palette.java`, `AmoledTheme.java`, `RootBridge.java` and `app/src/main/
 | Main accent | `#FFB49AFF` | Keyboard accents, active tiles, volume progress, app-icon accent |
 | Inactive bubbles | `#FF757575` | Independent color picker |
 | Notification background | `#FF171717` | Independent color picker |
-| Notification text | `#FFFFFFFF` | Independent color picker, fully opaque |
-| Notification icons | `#FF757575` | Independent color picker, fully opaque |
+| Notification text | `#FFFFFFFF` | Independent color picker, preserves entered alpha |
+| Notification icons | `#FF757575` | Independent color picker, preserves entered alpha |
 | Quick Panel icon fill | White | Manual Black/White slider |
 | Volume icons | Old automatic result on first upgrade; otherwise the saved choice | Manual Black/White slider; does not change automatically with the accent |
 
-All color pickers except the fixed pop-up accept six-digit RGB and produce opaque colors. Reset returns each secondary color to the initial value above.
+All color pickers accept six-digit RGB (opaque) or eight-digit Android ARGB (alpha first). Eight-digit values keep their opacity through the wheel, preferences and root apply. Catalog opacity is multiplied by the selected alpha where applicable. Reset returns each secondary color to the initial value above.
 
 The main action button's text uses automatic contrast: relative sRGB luminance above `.179` selects black, otherwise white. The same helper selects the small symbol inside a notification preview's colored app-icon circle. It does not override the manual Quick Panel/volume choices or the white pop-up text.
 

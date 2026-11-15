@@ -7,10 +7,10 @@ import android.view.*;
 public final class ColorPicker extends View {
     public interface Listener {void change(int color,boolean finished);}
     Listener listener; Paint paint=new Paint(3);float[] hsv={262,.65f,1};
-    float cx,cy,radius,thickness,left,top,side;int mode;
+    float cx,cy,radius,thickness,left,top,side;int mode,alpha=255;
     public ColorPicker(Context c){super(c);setContentDescription("Color picker. Use the hue slider and saturation and brightness sliders below with TalkBack.");setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);setLayerType(LAYER_TYPE_SOFTWARE,null);}
-    public void setColor(int color){Color.colorToHSV(color,hsv);invalidate();}
-    public int color(){return Color.HSVToColor(hsv);}
+    public void setColor(int color){alpha=color>>>24;Color.colorToHSV(color,hsv);invalidate();}
+    public int color(){return Color.HSVToColor(alpha,hsv);}
     protected void onMeasure(int w,int h){int width=MeasureSpec.getSize(w);setMeasuredDimension(width,width);}
     protected void onSizeChanged(int w,int h,int ow,int oh){cx=w/2f;cy=h/2f;radius=w*.45f;thickness=w*.075f;side=w*.45f;left=cx-side/2;top=cy-side/2;}
     protected void onDraw(Canvas c){

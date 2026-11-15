@@ -7,7 +7,8 @@ javac --release 8 -d build/tests \
   app/src/main/java/dev/dov/onetint/AmoledTheme.java \
   app/src/main/java/dev/dov/onetint/ThemeOptions.java \
   app/src/main/java/dev/dov/onetint/PreviewScene.java \
-  tests/PaletteTest.java tests/ThemeOptionsTest.java tests/VolumePreviewTest.java
+  tests/PaletteTest.java tests/ThemeOptionsTest.java tests/VolumePreviewTest.java tests/HexColorTest.java
+java -cp build/tests HexColorTest
 java -cp build/tests PaletteTest
 java -cp build/tests ThemeOptionsTest
 java -cp build/tests VolumePreviewTest

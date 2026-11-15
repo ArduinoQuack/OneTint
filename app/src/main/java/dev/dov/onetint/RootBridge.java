@@ -139,9 +139,9 @@ public final class RootBridge {
                 phase="restoring previous theme";restore();diagnostics.put("after",states());
                 System.out.println("ONETINT:"+new JSONObject().put("ok",true).put("restored",true).put("diagnostics",diagnostics));System.exit(0);return;
             }
-            if(!args[0].equals("apply")||!args[3].matches("[0-9a-fA-F]{6}"))throw new IllegalArgumentException("Invalid color request");
+            if(!args[0].equals("apply"))throw new IllegalArgumentException("Invalid color request");
             phase="building Android-owned Theme Park overlays";
-            int seed=(int)(0xff000000L|Long.parseLong(args[3],16));
+            int seed=ThemeOptions.rgb(args[3]);
             Context ctx=context();
             int oneui=0;try {oneui=(Integer)Class.forName("android.os.SystemProperties").getMethod("getInt",String.class,int.class).invoke(null,"ro.build.version.oneui",0);}catch(Exception ignored){}
             if(oneui<60000||oneui>=100000)throw new IllegalStateException("Unsupported One UI version: "+oneui);
@@ -166,7 +166,7 @@ public final class RootBridge {
                         if(res.getIdentifier(n,type,target)==0){missing++;continue;}
                         if(!seen.add(type+"/"+n))continue;
                         if(type.equals("string")) {
-                            String marker=String.format(java.util.Locale.US,"#%06X",seed&0xffffff);
+                            String marker=ThemeOptions.hex(seed);
                             strings.put(new JSONObject().put("name",n).put("value",marker));
                             expectedEntries.put(new JSONObject().put("name",n).put("type",type).put("day",marker).put("night",marker));
                             continue;

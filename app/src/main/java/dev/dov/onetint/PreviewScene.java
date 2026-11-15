@@ -25,7 +25,7 @@ public final class PreviewScene {
         for(int i=0;i<10;i++)key(d,8+i*(k+gap),12,k,24,"1234567890".substring(i,i+1),key,WHITE);
         String[] rows={"qwertyuiop","asdfghjkl"};
         for(int row=0;row<2;row++){String letters=rows[row];float start=(w-(letters.length()*k+(letters.length()-1)*gap))/2;for(int i=0;i<letters.length();i++){
-            float x=start+i*(k+gap);boolean pressed=row==1&&i==4;int fill=pressed?Palette.mix(seed,0xff000000,.5f):key;
+            float x=start+i*(k+gap);boolean pressed=row==1&&i==4;int fill=pressed?Palette.over(Palette.alpha(seed,50),0xff000000):key;
             key(d,x,42+row*36,k,h,letters.substring(i,i+1),fill,pressed?Palette.on(fill):WHITE);if(pressed)pressedX=x+k/2;
         }}
         float shift=k*1.4f,lettersWidth=7*k+6*gap,total=shift*2+lettersWidth+2*gap,start=(w-total)/2;
@@ -47,11 +47,11 @@ public final class PreviewScene {
     static void quickPanel(Draw d,float w,int seed,ThemeOptions options){
         String[] labels={"Wi-Fi","Bluetooth","Airplane","Flashlight","Location","Do not disturb"};boolean[] active={true,true,false,false,true,false};
         float cell=(w-24)/3;
-        for(int i=0;i<6;i++){float x=12+cell*(i%3+.5f),y=38+(i/3)*78;int fill=active[i]?seed:options.inactive;d.circle(x,y,23,fill);glyph(d,i,x,y,options.quickIconsWhite?0xffffffff:0xff000000,fill);d.text(labels[i],x,y+39,10,WHITE);}
+        for(int i=0;i<6;i++){float x=12+cell*(i%3+.5f),y=38+(i/3)*78;int fill=Palette.over(active[i]?seed:options.inactive,0xff000000);d.circle(x,y,23,fill);glyph(d,i,x,y,options.quickIconsWhite?0xffffffff:0xff000000,fill);d.text(labels[i],x,y+39,10,WHITE);}
         notification(d,w,174,options);
     }
     static void notification(Draw d,float w,float y,ThemeOptions options){
-        int ink=options.notificationText,fill=options.notificationBackground,icon=options.notificationIcons,iconInk=Palette.on(icon);
+        int ink=options.notificationText,fill=Palette.over(options.notificationBackground,0xff000000),icon=Palette.over(options.notificationIcons,fill),iconInk=Palette.on(icon);
         d.box(8,y,w-8,y+70,35,fill);d.circle(38,y+35,20,icon);
         d.box(27,y+26,49,y+41,5,iconInk);d.polygon(new float[]{31,y+38,31,y+45,38,y+38},iconInk);for(int i=0;i<3;i++)d.circle(32+i*6,y+33,1,icon);
         d.textLeft("Messages",70,y+21,11,ink);d.textLeft("7:20 AM",130,y+21,8,ink);

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.12
+
+- Accept RGB and ARGB hex values, including `8086ABF2`.
+- Preserve transparency when moving the color wheel, saving colors and applying overlays.
+- Show all eight digits so the saved alpha is visible.
+
 ## 0.1.11
 
 - Set the key pop-up to `#80171717`, with white text.

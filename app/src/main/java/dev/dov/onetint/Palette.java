@@ -8,7 +8,10 @@ public final class Palette {
             | Math.round((a&255)*(1-t)+(b&255)*t);
     }
     public static int alpha(int c,int percent) {return (c&0xffffff) | (Math.round(((c>>>24)&255)*percent/100f)<<24);}
+    /** Composite a foreground over an opaque preview/background surface. */
+    public static int over(int color,int background){float a=(color>>>24)/255f;return mix(background,color,a);}
     public static int on(int c) {
+        c=over(c,0xff000000);
         double l=0; double[] w={.2126,.7152,.0722};
         for(int i=0;i<3;i++){double x=((c>>(16-i*8))&255)/255.;l+=w[i]*(x<=.04045?x/12.92:Math.pow((x+.055)/1.055,2.4));}
         return l>.179 ? 0xff000000 : 0xffffffff;
