@@ -19,7 +19,8 @@ public final class ThemeOptionsTest {
         equal(AmoledTheme.theme("Keyboard","75-5-1","surface",o),"#80171717");
         if(Palette.alpha(0x80171717,100)!=0x80171717)throw new AssertionError("Popup alpha was changed");
         equal(AmoledTheme.theme("Keyboard","75-5-3","on_surface",o),"#FFFFFFFF");
-        ThemeOptions snapshot=o.copy();o.notificationText=0xff000000;if(snapshot.notificationText!=0xffeadbc2)throw new AssertionError("Mutable apply snapshot");
+        o.overrides.put("Keyboard:75-5-1",0x8086abf2);equal(AmoledTheme.theme("Keyboard","75-5-1","surface",o),"#8086ABF2");if(AmoledTheme.opacity("Keyboard","75-5-1",50,o)!=100)throw new AssertionError("Custom alpha multiplied twice");
+        ThemeOptions snapshot=o.copy();o.overrides.clear();if(snapshot.overrides.size()!=1)throw new AssertionError("Override snapshot shared");o.notificationText=0xff000000;if(snapshot.notificationText!=0xffeadbc2)throw new AssertionError("Mutable apply snapshot");
         String[] invalid=args.clone();invalid[7]="auto";rejects(invalid);invalid=args.clone();invalid[8]="17171";rejects(invalid);invalid=args.clone();invalid[9]="$(id)";rejects(invalid);rejects(new String[7]);
         System.out.println("PASS: custom notification colors, independent volume icons, opacity, immutable snapshot and root input validation");
     }

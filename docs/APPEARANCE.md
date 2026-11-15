@@ -2,7 +2,7 @@
 
 Colors below use Android's `#AARRGGBB` format: alpha, red, green, blue. `80` is 128/255 opacity (about 50%); `FF` is fully opaque. A translucent color's visible result depends on the surface behind it.
 
-## Fixed applied values
+## Built-in applied defaults
 
 | Use | Value or rule |
 | --- | --- |
@@ -62,3 +62,13 @@ The launcher icon has a fixed `#FF171820` background and `#FFF8F1FF` highlight. 
 ## Other fixed behavior
 
 Catalog resource names, per-component opacity, supported version ranges, the main-user restriction, overlay identifiers, restore-state whitelist and operation timeouts are constants. They are implementation limits rather than appearance controls. Layout, sounds, key animations and real notification content are not changed by OneTint.
+
+## Individual color overrides (0.2.0)
+
+Each preview tab has a color-list button. On One UI 8, the catalog has 96 Keyboard, 38 Quick Panel and 6 Volume color groups. Other catalog versions can differ. The list is searchable and each entry accepts exact RGB or ARGB. Reset removes an override and restores its built-in or linked-accent behavior. Reset section removes all overrides in that section.
+
+An override is a final ARGB value: catalog opacity is not multiplied into it a second time. Custom rows are applied before defaults so resource aliases inherit the chosen custom value. Main and cover-screen resources sharing a catalog group stay linked. The main previews reflect the mapped colors they draw, but do not render every toolbar, state, panel or device-specific drawable.
+
+These controls cover Theme Park-mapped colors, not every resource in Samsung APKs. Sounds, geometry, blur, images and runtime animations are not editable in this release.
+
+The list filters out groups whose named resources and mapped aliases are unavailable on the current device. The number of visible controls can therefore be lower than the catalog totals.

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.0
+
+- Add searchable, individual color controls for Keyboard, Quick Panel and Volume.
+- Save custom ARGB values and reset individual colors or a section.
+- Keep explicit overrides independent of the main accent, preserving the entered opacity.
+- Update the main preview colors to follow custom values. Some secondary resources are not drawn in the preview.
+
 ## 0.1.12
 
 - Accept RGB and ARGB hex values, including `8086ABF2`.

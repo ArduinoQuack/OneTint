@@ -19,7 +19,7 @@ bash build.sh
 unset ONETINT_KEY_PASSWORD
 ```
 
-Output: `build/OneTint.apk`. The build verifies its signature, ZIP contents and alignment. Package `dev.dov.onetint`, version 0.1.12 (code 13), minimum API 34, target API 35. The build uses the keystore's sole signing key; the key password is expected to match the store password.
+Output: `build/OneTint.apk`. The build verifies its signature, ZIP contents and alignment. Package `dev.dov.onetint`, version 0.2.0 (code 14), minimum API 34, target API 35. The build uses the keystore's sole signing key; the key password is expected to match the store password.
 
 For a separate personal build, create your own keystore with `keytool`. A differently signed APK cannot be installed over an official or previous personal build. Restore the existing theme before uninstalling an old app to switch signers.
 

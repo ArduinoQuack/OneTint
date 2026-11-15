@@ -17,16 +17,19 @@ public final class PreviewScene {
     public static int height(int mode){return mode==0?194:mode==1?256:128;}
     public static void draw(Draw d,float w,int mode,int seed,ThemeOptions options,int mediaLevel,int mediaMax){
         d.box(0,0,w,height(mode),20,0xff000000);
-        if(mode==0)keyboard(d,w,seed);else if(mode==1)quickPanel(d,w,seed,options);else volume(d,w,seed,options,mediaLevel,mediaMax);
+        if(mode==0)keyboard(d,w,seed,options);else if(mode==1)quickPanel(d,w,seed,options);else volume(d,w,seed,options,mediaLevel,mediaMax);
     }
     static void key(Draw d,float x,float y,float width,float height,String letter,int bg,int ink){d.box(x,y,x+width,y+height,5,bg);d.text(letter,x+width/2,y+height/2+4,11,ink);}
-    static void keyboard(Draw d,float w,int seed){
-        float gap=3,k=(w-16-9*gap)/10,h=30,pressedX=w/2;int key=0xff0c0c0c;
-        for(int i=0;i<10;i++)key(d,8+i*(k+gap),12,k,24,"1234567890".substring(i,i+1),key,WHITE);
+    static int mapped(ThemeOptions o,String group,String uid,int fallback){Integer c=o.override(group,uid);return c==null?fallback:c;}
+    static void keyboard(Draw d,float w,int seed,ThemeOptions options){
+        d.box(0,0,w,194,20,mapped(options,"Keyboard","75-1-1",0xff000000));
+        int WHITE=mapped(options,"Keyboard","75-3-2",0xfff5f4fa);
+        float gap=3,k=(w-16-9*gap)/10,h=30,pressedX=w/2;int key=mapped(options,"Keyboard","75-2-2",0x80181818);
+        for(int i=0;i<10;i++)key(d,8+i*(k+gap),12,k,24,"1234567890".substring(i,i+1),mapped(options,"Keyboard","75-2-1",0x80181818),WHITE);
         String[] rows={"qwertyuiop","asdfghjkl"};
         for(int row=0;row<2;row++){String letters=rows[row];float start=(w-(letters.length()*k+(letters.length()-1)*gap))/2;for(int i=0;i<letters.length();i++){
-            float x=start+i*(k+gap);boolean pressed=row==1&&i==4;int fill=pressed?Palette.over(Palette.alpha(seed,50),0xff000000):key;
-            key(d,x,42+row*36,k,h,letters.substring(i,i+1),fill,pressed?Palette.on(fill):WHITE);if(pressed)pressedX=x+k/2;
+            float x=start+i*(k+gap);boolean pressed=row==1&&i==4;int fill=pressed?mapped(options,"Keyboard","75-2-4",Palette.alpha(seed,50)):key;
+            key(d,x,42+row*36,k,h,letters.substring(i,i+1),fill,WHITE);if(pressed)pressedX=x+k/2;
         }}
         float shift=k*1.4f,lettersWidth=7*k+6*gap,total=shift*2+lettersWidth+2*gap,start=(w-total)/2;
         key(d,start,114,shift,h,"",key,WHITE);float cx=start+shift/2,cy=129;
@@ -41,17 +44,18 @@ public final class PreviewScene {
         java.util.ArrayList<Float> outline=new java.util.ArrayList<>();
         popupCorner(outline,pressedX-11,29,180);popupCorner(outline,pressedX+11,29,270);popupCorner(outline,pressedX+11,62,0);
         outline.add(pressedX+9);outline.add(80f);outline.add(pressedX-9);outline.add(80f);popupCorner(outline,pressedX-11,62,90);
-        float[] points=new float[outline.size()];for(int i=0;i<points.length;i++)points[i]=outline.get(i);d.polygon(points,0x80171717);d.text("g",pressedX,54,26,0xffffffff);
+        float[] points=new float[outline.size()];for(int i=0;i<points.length;i++)points[i]=outline.get(i);d.polygon(points,mapped(options,"Keyboard","75-5-1",0x80171717));d.text("g",pressedX,54,26,mapped(options,"Keyboard","75-5-3",0xffffffff));
     }
     static void popupCorner(java.util.List<Float> points,float x,float y,int start){for(int i=0;i<=8;i++){double angle=Math.toRadians(start+i*90/8f);points.add(x+10*(float)Math.cos(angle));points.add(y+10*(float)Math.sin(angle));}}
     static void quickPanel(Draw d,float w,int seed,ThemeOptions options){
+        int background=Palette.over(mapped(options,"QuickPanel","4-1-2",0xff000000),0xff000000);d.box(0,0,w,256,20,background);
         String[] labels={"Wi-Fi","Bluetooth","Airplane","Flashlight","Location","Do not disturb"};boolean[] active={true,true,false,false,true,false};
         float cell=(w-24)/3;
-        for(int i=0;i<6;i++){float x=12+cell*(i%3+.5f),y=38+(i/3)*78;int fill=Palette.over(active[i]?seed:options.inactive,0xff000000);d.circle(x,y,23,fill);glyph(d,i,x,y,options.quickIconsWhite?0xffffffff:0xff000000,fill);d.text(labels[i],x,y+39,10,WHITE);}
+        for(int i=0;i<6;i++){float x=12+cell*(i%3+.5f),y=38+(i/3)*78;int fill=Palette.over(active[i]?mapped(options,"QuickPanel","4-2-3",seed):mapped(options,"QuickPanel","4-2-4",options.inactive),background);d.circle(x,y,23,fill);glyph(d,i,x,y,mapped(options,"QuickPanel",active[i]?"4-2-1":"4-2-2",options.quickIconsWhite?0xffffffff:0xff000000),fill);d.text(labels[i],x,y+39,10,WHITE);}
         notification(d,w,174,options);
     }
     static void notification(Draw d,float w,float y,ThemeOptions options){
-        int ink=options.notificationText,fill=Palette.over(options.notificationBackground,0xff000000),icon=Palette.over(options.notificationIcons,fill),iconInk=Palette.on(icon);
+        int ink=mapped(options,"QuickPanel","4-22-2",options.notificationText),fill=Palette.over(mapped(options,"QuickPanel","4-4-1",options.notificationBackground),mapped(options,"QuickPanel","4-1-2",0xff000000)),icon=Palette.over(mapped(options,"QuickPanel","4-99-2",options.notificationIcons),fill),iconInk=Palette.on(icon);
         d.box(8,y,w-8,y+70,35,fill);d.circle(38,y+35,20,icon);
         d.box(27,y+26,49,y+41,5,iconInk);d.polygon(new float[]{31,y+38,31,y+45,38,y+38},iconInk);for(int i=0;i<3;i++)d.circle(32+i*6,y+33,1,icon);
         d.textLeft("Messages",70,y+21,11,ink);d.textLeft("7:20 AM",130,y+21,8,ink);
@@ -69,9 +73,9 @@ public final class PreviewScene {
     }
     static void volume(Draw d,float w,int seed,ThemeOptions options,int level,int max){
         level=Math.max(0,Math.min(level,max));float fraction=max>0?(float)level/max:0;
-        d.box(10,8,w-10,120,18,0xff151515);d.textLeft("Media volume",24,34,13,WHITE);d.text(max>0?level+" / "+max:"—",w-48,34,11,WHITE);
-        float l=24,r=w-24,progress=l+(r-l)*fraction;d.box(l,55,r,101,23,0xff333333);
-        if(fraction>0)d.box(l,55,progress,101,Math.min(23,(progress-l)/2),seed);
-        d.volumeIcon(48,78,options.volumeIconsWhite?0xffffffff:0xff000000);
+        d.box(10,8,w-10,120,18,mapped(options,"Volume","2001-4",0xff000000));d.textLeft("Media volume",24,34,13,mapped(options,"Volume","2001-5",WHITE));d.text(max>0?level+" / "+max:"—",w-48,34,11,WHITE);
+        float l=24,r=w-24,progress=l+(r-l)*fraction;d.box(l,55,r,101,23,mapped(options,"Volume","2001-3",0x80181818));
+        if(fraction>0)d.box(l,55,progress,101,Math.min(23,(progress-l)/2),mapped(options,"Volume","2001-1",seed));
+        d.volumeIcon(48,78,mapped(options,"Volume","2001-2",options.volumeIconsWhite?0xffffffff:0xff000000));
     }
 }

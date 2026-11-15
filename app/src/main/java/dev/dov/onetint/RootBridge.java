@@ -128,6 +128,7 @@ public final class RootBridge {
         try {
             if(android.os.Process.myUid()!=0)throw new SecurityException("Root access was not granted");
             ThemeOptions options=ThemeOptions.fromArgs(args);
+            if(args.length==12){if(args[11].length()>65536)throw new IllegalArgumentException("Too many color overrides");JSONObject custom=new JSONObject(args[11]);java.util.Iterator<String> keys=custom.keys();while(keys.hasNext()){String key=keys.next();if(!key.matches("(Keyboard|QuickPanel|Volume):[A-Za-z0-9-]+"))throw new IllegalArgumentException("Invalid color override");options.overrides.put(key,ThemeOptions.rgb(custom.getString(key)));}}
             user=Integer.parseInt(args[1]);if(user!=0)throw new IllegalArgumentException("This experimental build currently supports the main Android user only");init();
             stateFile=new File(args[4]).getCanonicalFile();
             if(!stateFile.getName().equals("theme-state.json")||!(stateFile.getParent().equals("/data/user/0/dev.dov.onetint/files")||stateFile.getParent().equals("/data/data/dev.dov.onetint/files")))throw new SecurityException("Invalid private restore state path");
@@ -156,10 +157,11 @@ public final class RootBridge {
                 Map<String,List<String>> alias=aliases(res,target);
                 // Match ownership and naming observed in the device's working Theme Park overlays.
                 Object builder=builderClass.getConstructor(String.class,String.class,String.class).newInstance("android",CURRENT_PREFIX+name,target);
-                JSONArray rows=group.getJSONArray("rows"),expectedEntries=new JSONArray(),strings=new JSONArray();Set<String> seen=new HashSet<>();int missing=0;
+                JSONArray sourceRows=group.getJSONArray("rows"),rows=new JSONArray();for(boolean customFirst:new boolean[]{true,false})for(int r=0;r<sourceRows.length();r++){JSONObject item=sourceRows.getJSONObject(r);if((options.override(name,item.getString("uid"))!=null)==customFirst)rows.put(item);}
+                JSONArray expectedEntries=new JSONArray(),strings=new JSONArray();Set<String> seen=new HashSet<>();int missing=0;
                 for(int j=0;j<rows.length();j++) {
                     JSONObject row=rows.getJSONObject(j);String type=row.getString("type"),uid=row.getString("uid"),theme=AmoledTheme.theme(name,uid,row.getString("theme"),options);
-                    int opacity=AmoledTheme.opacity(name,uid,row.getInt("opacity"));
+                    int opacity=AmoledTheme.opacity(name,uid,row.getInt("opacity"),options);
                     ArrayList<String> resources=new ArrayList<>();JSONArray ns=row.getJSONArray("names");
                     for(int k=0;k<ns.length();k++){String n=ns.getString(k);resources.add(n);if(alias.containsKey(n))resources.addAll(alias.get(n));}
                     for(String n:resources) {

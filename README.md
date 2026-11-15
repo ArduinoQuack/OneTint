@@ -10,7 +10,7 @@ Change the colors of Samsung Keyboard, Quick Panel and the volume panel. Root re
 - Notification background, text and icon colors
 - Volume icons: black or white
 
-The keyboard background stays AMOLED black. Normal keys stay dark, pressed keys use a dimmed accent, and the key pop-up is translucent gray (`#80171717`) with white text. OneTint's app icon also follows the applied accent.
+By default, the keyboard background is AMOLED black, normal keys are dark, pressed keys use a dimmed accent, and the key pop-up is translucent gray (`#80171717`) with white text. Open **Keyboard colors**, **Quick Panel colors** or **Volume colors** below the preview to edit individual colors. Search by name, enter RGB or ARGB, and reset a single color or the whole section. Custom values take priority over the main accent. OneTint's app icon also follows the applied accent.
 
 ## Install
 
@@ -24,7 +24,7 @@ Pick a color and tap **Apply color**. Live updates stay on until you tap **Pause
 
 Requires Android 14+, Samsung Keyboard and the main Android user. Resource mappings are included for One UI 6–9, but most testing has been on a Galaxy S24+ running Android 16 / One UI 8.5.
 
-Samsung updates can break the mappings. Picture themes and high-contrast keyboards may also affect the result. The latest changes in 0.1.11 have passed build and preview checks; phone testing is still pending.
+Samsung updates can break the mappings. Picture themes and high-contrast keyboards may also affect the result. The expanded color controls in 0.2.0 have passed local build and mapping tests; phone testing is still pending.
 
 ## How it works
 
