@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.1
+
+- Replace the resource-name list with labeled color swatches around each preview.
+- Group the keyboard controls into keys, letters, pressed key, pop-up and background.
+- Put notification colors directly below the Quick Panel controls.
+- Show one vertical volume popup, with fill and track controls beside it.
+- Add an opacity slider to the color editor and keep the exact ARGB field.
+- Redraw the Quick Panel connection tiles and stop keyboard labels showing through the pop-up.
+- Prefer Samsung media and headphone icons when available.
+
 ## 0.2.0
 
 - Add searchable, individual color controls for Keyboard, Quick Panel and Volume.

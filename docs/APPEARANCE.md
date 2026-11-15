@@ -48,10 +48,10 @@ Previews illustrate the settings; they are not screenshots of SystemUI or Samsun
 | Preview | Fixed values |
 | --- | --- |
 | Keyboard | QWERTY layout, `EN(US)` spacebar, simulated pressed `g`, key dimensions and labels |
-| Quick Panel | Six sample tiles and their on/off states; one sample pizza message from Messages at 7:20 AM |
-| Volume | Panel `#FF151515`, unfilled track `#FF333333`, labels `#FFF5F4FA`; number/fill come from the current Android media stream |
+| Quick Panel | Two connection tiles and four sample round buttons with fixed on/off states; one sample pizza message from Messages at 7:20 AM |
+| Volume | One vertical popup; default track `#80181818`, labels `#FFF5F4FA`; number/fill come from the current Android media stream |
 
-The volume number is Android's current stream index / maximum, not a fixed percentage. Vendor fine-volume steps or output-device displays can differ from this public API. A Samsung media drawable is used if a supported resource name is present; otherwise the bundled Material volume icon is used.
+The volume number is Android's current stream index, not a fixed percentage. Fill uses that index divided by the reported maximum. Vendor fine-volume steps or output-device displays can differ from this public API. A Samsung media drawable is used if a supported resource name is present; otherwise the bundled Material volume icon is used.
 
 ## App interface and launcher icon
 
@@ -63,12 +63,20 @@ The launcher icon has a fixed `#FF171820` background and `#FFF8F1FF` highlight. 
 
 Catalog resource names, per-component opacity, supported version ranges, the main-user restriction, overlay identifiers, restore-state whitelist and operation timeouts are constants. They are implementation limits rather than appearance controls. Layout, sounds, key animations and real notification content are not changed by OneTint.
 
-## Individual color overrides (0.2.0)
+## Color swatches (0.2.1)
 
-Each preview tab has a color-list button. On One UI 8, the catalog has 96 Keyboard, 38 Quick Panel and 6 Volume color groups. Other catalog versions can differ. The list is searchable and each entry accepts exact RGB or ARGB. Reset removes an override and restores its built-in or linked-accent behavior. Reset section removes all overrides in that section.
+The resource-name list has been replaced with these controls:
 
-An override is a final ARGB value: catalog opacity is not multiplied into it a second time. Custom rows are applied before defaults so resource aliases inherit the chosen custom value. Main and cover-screen resources sharing a catalog group stay linked. The main previews reflect the mapped colors they draw, but do not render every toolbar, state, panel or device-specific drawable.
+| Tab | Swatches |
+| --- | --- |
+| Keyboard | Keys (number, letter and function key backgrounds together), Letters (normal letters and key symbols), Pressed key, Key pop-up, Background (keyboard, navigation bar, toolbar and prediction strip) |
+| Quick Panel | Active bubbles, Inactive bubbles, Background (panel and tile containers); notification Background, Text and Icons |
+| Volume | Fill and Track, beside the vertical popup |
 
-These controls cover Theme Park-mapped colors, not every resource in Samsung APKs. Sounds, geometry, blur, images and runtime animations are not editable in this release.
+Quick Panel and volume glyphs retain their separate black/white selectors. The pop-up's text remains white. The keyboard and panel remain black until their background swatches are edited.
 
-The list filters out groups whose named resources and mapped aliases are unavailable on the current device. The number of visible controls can therefore be lower than the catalog totals.
+Each swatch has a color wheel, exact RGB/ARGB field and opacity slider. Reset in that editor removes its custom override; linked colors follow the main accent again. Reset beside a section heading clears all overrides for that section, including saved secondary overrides from 0.2.0. It also resets that section's notification or icon choices. Existing saved overrides remain until edited or reset.
+
+An override is a final ARGB value: catalog opacity is not multiplied into it a second time. Custom rows are applied before defaults so resource aliases inherit the chosen custom value. Main and cover-screen resources sharing a catalog group stay linked. The previews reflect the mapped colors they draw, but do not render every toolbar, state, panel or device-specific drawable. The keyboard pop-up is composited over an occluding backdrop in the preview so underlying letters do not show through it.
+
+These controls cover selected Theme Park-mapped colors. Sounds, geometry, blur, images and runtime animations are not editable.

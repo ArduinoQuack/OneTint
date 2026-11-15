@@ -3,13 +3,14 @@ import android.content.Context;
 import android.graphics.*;
 import android.view.View;
 public final class Preview extends View {
-    ThemeOptions options=new ThemeOptions();int seed=0xffb49aff,mode=0,mediaLevel=0,mediaMax=0;final Paint paint=new Paint(3);final float density;final android.graphics.drawable.Drawable wifi,volumeIcon;
+    ThemeOptions options=new ThemeOptions();int seed=0xffb49aff,mode=0,mediaLevel=0,mediaMax=0;final Paint paint=new Paint(3);final float density;final android.graphics.drawable.Drawable wifi;android.graphics.drawable.Drawable volumeIcon;
     public Preview(Context context){super(context);density=getResources().getDisplayMetrics().density;wifi=getResources().getDrawable(getResources().getIdentifier("ic_wifi","drawable",context.getPackageName()),context.getTheme()).mutate();volumeIcon=loadVolume(context);setMode(0);}
     android.graphics.drawable.Drawable loadVolume(Context context){
-        try{Context system=context.createPackageContext("com.android.systemui",0);android.content.res.Resources resources=system.getResources();for(String name:new String[]{"tw_ic_audio_media","ic_audio_media","ic_volume_media","ic_volume_media_normal","tw_ic_audio_sound","ic_volume_media_on"}){int id=resources.getIdentifier(name,"drawable","com.android.systemui");if(id!=0)try{return resources.getDrawable(id,system.getTheme()).mutate();}catch(RuntimeException ignored){}}}catch(Exception ignored){}
+        try{Context system=context.createPackageContext("com.android.systemui",0);android.content.res.Resources resources=system.getResources();android.media.AudioManager audio=(android.media.AudioManager)context.getSystemService(Context.AUDIO_SERVICE);String output=audio.isBluetoothA2dpOn()?"tw_ic_audio_buds3_solid":audio.isWiredHeadsetOn()?"tw_ic_audio_wire_earphone_mtrl":"tw_ic_audio_media_note";for(String name:new String[]{output,"tw_ic_audio_media_note","ic_audio_media_note_solid","ic_volume_media"}){int id=resources.getIdentifier(name,"drawable","com.android.systemui");if(id!=0)try{return resources.getDrawable(id,system.getTheme()).mutate();}catch(RuntimeException ignored){}}}catch(Exception ignored){}
         return getResources().getDrawable(getResources().getIdentifier("ic_volume_up","drawable",context.getPackageName()),context.getTheme()).mutate();
     }
-    public void setMode(int mode){this.mode=mode;setContentDescription(new String[]{"Keyboard preview","Quick Panel preview with six distinct circular buttons","Volume preview"}[mode]);requestLayout();invalidate();}
+    public void refreshOutputIcon(){volumeIcon=loadVolume(getContext());invalidate();}
+    public void setMode(int mode){this.mode=mode;setContentDescription(new String[]{"Keyboard preview","Quick Panel preview with connection tiles, four circular buttons and a pizza notification","Volume preview"}[mode]);requestLayout();invalidate();}
     protected void onMeasure(int w,int h){setMeasuredDimension(MeasureSpec.getSize(w),Math.round(PreviewScene.height(mode)*density));}
     protected void onDraw(Canvas canvas){canvas.save();canvas.scale(density,density);PreviewScene.draw(new PreviewScene.Draw(){
         void fill(int color){paint.setShader(null);paint.setColor(color);paint.setStyle(Paint.Style.FILL);}
